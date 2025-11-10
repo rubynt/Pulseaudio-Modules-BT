@@ -1,6 +1,7 @@
 # pulseaudio-modules-bt
 
-this repo is a fork of pulseaudio bluetooth modules
+this repo is a fork of pulseaudio bluetooth modules from darkcaster
+please do not use it for any serious use, because i was too lazy to uninitialize it, but if you create a issue i might fix it.
 
 and adds LDAC, APTX, APTX-HD, AAC support, extended configuration for SBC
 
