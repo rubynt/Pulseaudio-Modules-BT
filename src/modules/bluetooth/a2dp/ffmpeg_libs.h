@@ -49,6 +49,9 @@ typedef void (*avcodec_free_context_func_t)(AVCodecContext **avctx);
 
 typedef int (*avcodec_open2_func_t)(AVCodecContext *avctx, const AVCodec *codec, AVDictionary **options);
 
+typedef int (*av_channel_layout_from_mask_func_t)(AVChannelLayout *channel_layout, uint64_t mask);
+
+typedef void (*av_channel_layout_uninit_func_t)(AVChannelLayout *channel_layout);
 
 extern avcodec_find_decoder_func_t avcodec_find_decoder_func;
 extern avcodec_find_encoder_func_t avcodec_find_encoder_func;
@@ -78,6 +81,8 @@ extern av_frame_alloc_func_t av_frame_alloc_func;
 extern av_frame_get_buffer_func_t av_frame_get_buffer_func;
 extern av_frame_make_writable_func_t av_frame_make_writable_func;
 extern av_frame_free_func_t av_frame_free_func;
+extern av_channel_layout_from_mask_func_t av_channel_layout_from_mask_func;
+extern av_channel_layout_uninit_func_t av_channel_layout_uninit_func;
 
 
 bool ffmpeg_libs_load();

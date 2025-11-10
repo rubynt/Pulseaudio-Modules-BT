@@ -35,6 +35,7 @@
 #include "ffmpeg_libs.h"
 
 static const char *AVCODEC_LIB_NAMES[] = {
+        "libavcodec.so.61",
         "libavcodec.so.58",
         "libavcodec.so"
 };
@@ -65,7 +66,9 @@ avcodec_alloc_context3_func_t avcodec_alloc_context3_func;
 avcodec_free_context_func_t avcodec_free_context_func;
 avcodec_open2_func_t avcodec_open2_func;
 
+
 static const char *AVUTIL_LIB_NAMES[] = {
+        "libavutil.so.59",
         "libavutil.so.56",
         "libavutil.so"
 };
@@ -74,7 +77,11 @@ static const char *av_frame_alloc_func_name = "av_frame_alloc";
 static const char *av_frame_get_buffer_func_name = "av_frame_get_buffer";
 static const char *av_frame_make_writable_func_name = "av_frame_make_writable";
 static const char *av_frame_free_func_name = "av_frame_free";
+static const char *av_channel_layout_from_mask_func_name = "av_channel_layout_from_mask";
+static const char *av_channel_layout_uninit_func_name = "av_channel_layout_uninit";
 
+av_channel_layout_from_mask_func_t av_channel_layout_from_mask_func;
+av_channel_layout_uninit_func_t av_channel_layout_uninit_func;
 av_frame_alloc_func_t av_frame_alloc_func;
 av_frame_get_buffer_func_t av_frame_get_buffer_func;
 av_frame_make_writable_func_t av_frame_make_writable_func;
@@ -118,6 +125,8 @@ static void libavutil_unload() {
     av_frame_get_buffer_func = NULL;
     av_frame_make_writable_func = NULL;
     av_frame_free_func = NULL;
+    av_channel_layout_from_mask_func = NULL;  // Add this
+    av_channel_layout_uninit_func = NULL;     // Add this
     if (libavutil_h) {
         dlclose(libavutil_h);
         libavutil_h = NULL;
@@ -196,6 +205,14 @@ static bool libavutil_load() {
         av_frame_free_func = load_func(libavutil_h, av_frame_free_func_name);
         if (av_frame_free_func == NULL)
             continue;
+
+	av_channel_layout_from_mask_func = load_func(libavutil_h, av_channel_layout_from_mask_func_name);
+        if (av_channel_layout_from_mask_func == NULL)
+            continue;
+        av_channel_layout_uninit_func = load_func(libavutil_h, av_channel_layout_uninit_func_name);
+        if (av_channel_layout_uninit_func == NULL)
+            continue;
+
         return true;
     }
 
